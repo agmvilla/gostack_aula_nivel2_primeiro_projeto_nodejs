@@ -1,7 +1,11 @@
+import 'reflect-metadata';
+
 import express, { response } from 'express';
 // src/server.ts
 import routes from './routes';
-import appointmentsRouter from './routes/appointment.routes';
+// import appointmentsRouter from './routes/appointment.routes';
+
+import './database';
 
 const app = express();
 
