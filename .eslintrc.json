@@ -23,12 +23,26 @@
         "prettier"
     ],
     "rules": {
+        "no-underscore-dangle": "off",
         "prettier/prettier": "error",
         "class-methods-use-this": "off",
         "@typescript-eslint/camelcase": "off",
+        "no-useless-constructor": "off",
+        "import/no-duplicates": "off",
         "@typesscipt-eslint/no-unused-vars": ["error", {
             "argsIgnorePattern": "_"
-        }]
+        }],
+        "@typescript-eslint/naming-convention": [
+            "error",
+            {
+                "selector": "interface",
+                "format": ["PascalCase"],
+                "custom": {
+                    "regex": "^I[A-Z]",
+                    "match": true
+                }
+            }
+        ],
         "import/extensions": [
             "error",
             "ignorePackages",
