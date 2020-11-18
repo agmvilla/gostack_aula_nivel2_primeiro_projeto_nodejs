@@ -1,13 +1,13 @@
 import { sign } from 'jsonwebtoken';
 import { inject, injectable } from 'tsyringe';
 
-import { compare } from 'bcryptjs';
 import User from '@modules/users/infra/typeorm/entities/User';
 
 import authConfig from '@config/auth';
 import AppError from '@shared/error/AppError';
 
 import IUsersRepository from '@modules/users/repositories/IUsersRepositories';
+import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
     email: string;
@@ -24,6 +24,9 @@ export default class AuthenticationService {
     constructor(
         @inject('UsersRepository')
         private usersRepository: IUsersRepository,
+
+        @inject('HashProvider')
+        private hashProvider: IHashProvider,
     ) {}
 
     public async execute({ email, password }: IRequest): Promise<IResponse> {
@@ -33,7 +36,10 @@ export default class AuthenticationService {
             throw new AppError('User/email does not match!', 401);
         }
 
-        const pwdMatch = await compare(password, user.password);
+        const pwdMatch = await this.hashProvider.compareHash(
+            password,
+            user.password,
+        );
 
         if (!pwdMatch) {
             throw new AppError('User/email does not match!', 401);
